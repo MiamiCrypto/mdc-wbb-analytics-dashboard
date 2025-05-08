@@ -1,4 +1,4 @@
-#,player,gp,gs,min,avg_min,fg,fga,fg_pct,3fg,3fga,pct,ft,fta,ft_pct,offr,defr,totr,avgr,pfoul,disq,assist,a_g,to,to_g,a_to_ratio,blk,blk_g,stl,stl_g,pts,avg_p
+#,player_name,gp,gs,min,avg_min,fg,fga,fg_pct,3fg,3fga,pct,ft,fta,ft_pct,offr,defr,totr,avgr,pfoul,disq,assist,a_g,to,to_g,a_to_ratio,blk,blk_g,stl,stl_g,pts,avg_p
 15,Shameir Quimby,31,30,795,25.6,241,496,48.6,2,14,14.3,113,163,69.3,113,139,252,8.1,59,1,137,4.4,72,2.3,1.9,8,0.3,81,2.6,597,19.3
 23,Clearia Peterson,31,31,723,23.3,231,477,48.4,9,41,22,89,147,60.5,145,229,374,12.1,88,3,48,1.5,84,2.7,0.6,24,0.8,47,1.5,560,18.1
 21,Kiara Harris,31,31,774,25,155,389,39.8,98,258,38,57,74,77,25,59,84,2.7,61,0,121,3.9,97,3.1,1.2,6,0.2,91,2.9,465,15
