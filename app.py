@@ -1,36 +1,49 @@
 import streamlit as st
 import pandas as pd
+from utils.load_data import load_clean_data
 from charts.radar import render_radar_chart
 from charts.barplots import render_bpr_by_class
 from charts.pie_charts import render_bpr_pie
 
+# Page config
+st.set_page_config(page_title="MDC WBB Analytics", layout="wide")
+
 # Load data
-@st.cache
-def load_data():
-    stats = pd.read_csv("data/player_season_stats_2024_25_cleaned.csv")
-    roster = pd.read_csv("data/mdc_roster_2024_25_cleaned.csv")
-    return pd.merge(stats, roster, on='player_name', how='left')
+df = load_clean_data()
 
-df = load_data()
-
+# App title
 st.title("🏀 MDC Women's Basketball Analytics Dashboard (2024–25)")
 
-# Sidebar filters
+# Sidebar
 st.sidebar.header("Filters")
-min_minutes = st.sidebar.slider("Minimum Minutes", 0, 800, 100)
-filtered_df = df[df['min'] >= min_minutes]
+min_minutes = st.sidebar.slider("Minimum Minutes Played", 0, 800, 100)
+selected_position = st.sidebar.multiselect("Filter by Position", options=df['position'].dropna().unique(), default=df['position'].dropna().unique())
+selected_class = st.sidebar.multiselect("Filter by Class Year", options=df['class_year'].dropna().unique(), default=df['class_year'].dropna().unique())
 
-# Tabs for analysis views
-tabs = st.tabs(["Summary Table", "Radar", "BPR Pie", "Class Breakdown"])
+# Apply filters
+filtered_df = df[
+    (df['minutes'] >= min_minutes) &
+    (df['position'].isin(selected_position)) &
+    (df['class_year'].isin(selected_class))
+]
+
+# Tabs
+tabs = st.tabs(["📋 Player Table", "📊 BPR Pie Chart", "🎓 Class BPR", "📈 Radar Comparison"])
 
 with tabs[0]:
-    st.dataframe(filtered_df[['player_name', 'points_per_game', 'box_obpr', 'box_dbpr', 'box_bpr']])
+    st.subheader("📋 Team Roster Stats")
+    st.dataframe(
+        filtered_df[
+            ['player_name', 'points_per_game', 'box_obpr', 'box_dbpr', 'box_bpr', 'minutes_per_game', 'class_year', 'position']
+        ].sort_values(by='box_bpr', ascending=False),
+        use_container_width=True
+    )
 
 with tabs[1]:
-    render_radar_chart(filtered_df)
-
-with tabs[2]:
     render_bpr_pie(filtered_df)
 
-with tabs[3]:
+with tabs[2]:
     render_bpr_by_class(filtered_df)
+
+with tabs[3]:
+    render_radar_chart(filtered_df)
